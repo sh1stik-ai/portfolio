@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Кирилл Шестаков — разработка</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Сайты, Telegram-боты и веб-сервисы с AI. Быстро, под ключ, с исходным кодом.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+
+/* Layout: «бриф → результат». Hero — запрос клиента и срок; дальше витрина работ, услуги с ценами, процесс, контакты. */
+:root{
+  --paper:#ECEFF5; --sheet:#FFFFFF; --ink:#141A2E; --ink-2:#4A5270; --line:#D3D8E6;
+  --signal:#F2551D; --signal-ink:#FFFFFF; --signal-soft:#FDE3D8; --code-bg:#141A2E; --code-fg:#E6E9F2; --code-dim:#8A93B2;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0F1322; --sheet:#171C2F; --ink:#E8EBF4; --ink-2:#9AA3C0; --line:#2A3150;
+  --signal:#FF6A33; --signal-ink:#140A05; --signal-soft:#3A1C12; --code-bg:#0A0D18; --code-fg:#E6E9F2; --code-dim:#7880A0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0F1322; --sheet:#171C2F; --ink:#E8EBF4; --ink-2:#9AA3C0; --line:#2A3150;
+  --signal:#FF6A33; --signal-ink:#140A05; --signal-soft:#3A1C12; --code-bg:#0A0D18; --code-fg:#E6E9F2; --code-dim:#7880A0; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(28px,4.2vw,44px);line-height:1.1;font-weight:700}
+h3{font-size:19px;line-height:1.25;font-weight:700}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+section{padding-block:clamp(56px,8vw,96px)}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 40px;margin-bottom:36px}
+.sec-head p{max-width:46ch;margin:0;color:var(--ink-2)}
+
+/* nav */
+nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.logo{font:800 16px/1 var(--f-display);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:12px;height:12px;border-radius:50%;background:var(--signal);display:inline-block}
+.nav-links{display:flex;gap:24px;font-size:15px}
+.nav-links a{text-decoration:none;color:var(--ink-2)}
+.nav-links a:hover{color:var(--ink)}
+@media (max-width:720px){.nav-links{display:none}}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:600 15px/1 var(--f-body);text-decoration:none;cursor:pointer;border:1.5px solid var(--ink);transition:transform .15s ease,background .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:var(--signal-ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-block:clamp(32px,6vw,72px) clamp(48px,7vw,88px)}
+.hero h1{font-size:clamp(38px,6.4vw,78px);line-height:1.02;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.hero .lead{font-size:clamp(17px,1.6vw,20px);color:var(--ink-2);max-width:44ch;margin:24px 0 32px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+.facts{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:36px;font:500 14px/1.3 var(--f-mono);color:var(--ink-2)}
+.facts b{display:block;font:700 26px/1.1 var(--f-display);color:var(--ink);font-variant-numeric:tabular-nums}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+
+/* terminal brief */
+.brief{background:var(--code-bg);color:var(--code-fg);border-radius:18px;padding:22px 22px 24px;font:400 14px/1.65 var(--f-mono);box-shadow:0 30px 60px -30px rgba(20,26,46,.55);min-width:0}
+.brief .bar{display:flex;gap:7px;margin-bottom:18px}
+.brief .bar span{width:11px;height:11px;border-radius:50%;background:#3A4160}
+.brief .who{color:var(--code-dim)}
+.brief .msg{margin:0 0 14px;white-space:pre-wrap}
+.brief .ok{color:#7BE0A5}
+.brief .sig{color:#FF8A5C}
+.brief .line{display:flex;justify-content:space-between;gap:12px;border-top:1px dashed #333B5C;padding-top:6px;margin-top:6px}
+.cursor{display:inline-block;width:8px;height:16px;background:var(--code-fg);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* marquee */
+.stack{border-block:1px solid var(--line);overflow:hidden;padding-block:16px;font:500 14px/1 var(--f-mono);color:var(--ink-2)}
+.stack .track{display:flex;gap:40px;width:max-content;animation:slide 40s linear infinite}
+.stack span::before{content:"/ ";color:var(--signal)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* works */
+.works{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.work{display:flex;flex-direction:column;gap:14px}
+.shot{aspect-ratio:16/10;max-width:100%;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--sheet);position:relative}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .5s ease}
+.work:hover .shot img{transform:scale(1.03)}
+.work .meta{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.work p{margin:0;color:var(--ink-2);font-size:15.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font:500 12px/1 var(--f-mono);padding:6px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+.kind{font:500 12px/1 var(--f-mono);color:var(--signal);white-space:nowrap}
+@media (max-width:760px){.works{grid-template-columns:1fr}}
+
+/* product mocks (no screenshot) */
+.mock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px}
+.mock.coach{background:linear-gradient(160deg,#1C2A4A,#0F1729)}
+.mock.bot{background:#E3EAF2}
+.mock.video{background:#17121F}
+.mock.game{background:radial-gradient(circle at 50% 70%,#2B3E6B,#0B1020 70%)}
+.dash{width:100%;max-width:420px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font:500 11px/1.2 var(--f-body);color:#C9D3EE}
+.dash div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px}
+.dash b{display:block;font:700 20px/1.1 var(--f-display);color:#fff;margin-top:4px}
+.dash .wide{grid-column:span 3;display:flex;align-items:flex-end;gap:5px;height:84px}
+.dash .wide i{flex:1;background:#5B8CFF;border-radius:3px 3px 0 0}
+.chat{width:100%;max-width:300px;display:flex;flex-direction:column;gap:8px;font:400 13px/1.35 var(--f-body)}
+.chat .b{padding:9px 12px;border-radius:14px;max-width:85%;color:#1A1F2E}
+.chat .in{background:#fff;align-self:flex-start}
+.chat .out{background:#D6F2C4;align-self:flex-end}
+.chat .kb{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.chat .kb span{background:rgba(255,255,255,.75);text-align:center;border-radius:8px;padding:7px;font-size:12px;color:#2A5BB8}
+.timeline{width:100%;max-width:420px;display:flex;flex-direction:column;gap:8px}
+.timeline .frame{height:120px;border-radius:10px;background:linear-gradient(120deg,#3B2A5C,#7A3B5E 60%,#F08A4B);position:relative}
+.timeline .frame::after{content:"AI: вырезать паузы · добавить субтитры";position:absolute;left:10px;bottom:10px;font:500 11px var(--f-mono);color:#fff;background:rgba(0,0,0,.45);padding:5px 8px;border-radius:6px}
+.timeline .row{display:flex;gap:3px;height:22px}
+.timeline .row i{background:#5E4A86;border-radius:3px}
+.cross{width:120px;height:120px;position:relative}
+.cross::before,.cross::after{content:"";position:absolute;background:#FF8A5C;border-radius:2px}
+.cross::before{left:58px;top:20px;width:4px;height:80px}
+.cross::after{top:58px;left:20px;height:4px;width:80px}
+.hud{position:absolute;left:18px;right:18px;bottom:16px;display:flex;justify-content:space-between;font:500 12px var(--f-mono);color:#C9D3EE}
+.hud b{color:#fff}
+
+/* services */
+.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.svc{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.svc.hot{border-color:var(--signal);box-shadow:0 0 0 1px var(--signal)}
+.svc .price{font:700 30px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.svc .price small{font:500 14px var(--f-body);color:var(--ink-2)}
+.svc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:15.5px}
+.svc li{padding-left:22px;position:relative}
+.svc li::before{content:"";position:absolute;left:2px;top:.6em;width:10px;height:2px;background:var(--signal)}
+.svc .term{margin-top:auto;font:500 13px var(--f-mono);color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:960px){.services{grid-template-columns:1fr}}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;counter-reset:s}
+.step{border-top:2px solid var(--ink);padding-top:18px}
+.step .n{font:500 13px var(--f-mono);color:var(--signal)}
+.step h3{margin:8px 0 8px}
+.step p{margin:0;color:var(--ink-2);font-size:15.5px}
+@media (max-width:860px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.why div{display:flex;flex-direction:column;gap:8px}
+.why p{margin:0;color:var(--ink-2)}
+@media (max-width:860px){.why{grid-template-columns:1fr}}
+
+/* contact */
+.contact{background:var(--ink);color:var(--paper);border-radius:28px;padding:clamp(32px,6vw,64px);display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
+.contact h2{color:var(--paper)}
+.contact p{color:var(--paper);opacity:.75;max-width:44ch}
+.contact .btn.ghost{border-color:var(--paper);color:var(--paper)}
+.contact .links{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+@media (max-width:860px){.contact{grid-template-columns:1fr}}
+footer{padding-block:32px 48px;font:400 13px var(--f-mono);color:var(--ink-2)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <nav class="top">
+    <a class="logo" href="#top"><i></i>Кирилл Шестаков</a>
+    <div class="nav-links"><a href="#works">Работы</a><a href="#services">Услуги и цены</a><a href="#process">Как работаю</a><a href="#contact">Контакты</a></div>
+    <a class="btn primary" href="#contact">Обсудить проект</a>
+  </nav>
+
+  <header class="hero" id="top">
+    <div>
+      <div class="eyebrow">Сайты · Telegram-боты · веб-сервисы с AI</div>
+      <h1 style="margin-top:18px">Опишите идею.<br>Через <em>3&nbsp;дня</em> она работает.</h1>
+      <p class="lead">Делаю лендинги, ботов и MVP вместе с AI-ассистентами. Поэтому быстрее и дешевле студии, а код и доступы остаются у вас.</p>
+      <div class="ctas">
+        <a class="btn primary" href="#contact">Получить оценку за 15 минут</a>
+        <a class="btn ghost" href="#works">Смотреть работы</a>
+      </div>
+      <div class="facts">
+        <div><b>10</b>проектов в портфолио</div>
+        <div><b>от 3 дней</b>лендинг под ключ</div>
+        <div><b>100%</b>код передаю вам</div>
+      </div>
+    </div>
+    <div class="brief" aria-label="Пример брифа и результата">
+      <div class="bar"><span></span><span></span><span></span></div>
+      <p class="msg"><span class="who">клиент &gt;</span> Нужен сайт для барбершопа. Тёмный, премиальный, с онлайн-записью и ценами.</p>
+      <p class="msg"><span class="who">кирилл &gt;</span> Принято. Покажу первый экран завтра.</p>
+      <div class="line"><span>дизайн + вёрстка</span><span class="ok">готово</span></div>
+      <div class="line"><span>адаптив под телефон</span><span class="ok">готово</span></div>
+      <div class="line"><span>форма записи → Telegram</span><span class="ok">готово</span></div>
+      <div class="line"><span>домен и хостинг</span><span class="ok">готово</span></div>
+      <div class="line"><span>срок</span><span class="sig">3 дня</span></div>
+      <p class="msg" style="margin-top:14px"><span class="who">клиент &gt;</span> <span class="cursor"></span></p>
+    </div>
+  </header>
+</div>
+
+<div class="stack" aria-label="Технологии"><div class="track">
+  <span>HTML / CSS / JS</span><span>Next.js</span><span>React</span><span>TypeScript</span><span>Tailwind</span><span>Supabase</span><span>Python</span><span>aiogram</span><span>FastAPI</span><span>Claude API</span><span>Three.js</span><span>WebSocket</span><span>PWA</span><span>Vercel</span>
+  <span>HTML / CSS / JS</span><span>Next.js</span><span>React</span><span>TypeScript</span><span>Tailwind</span><span>Supabase</span><span>Python</span><span>aiogram</span><span>FastAPI</span><span>Claude API</span><span>Three.js</span><span>WebSocket</span><span>PWA</span><span>Vercel</span>
+</div></div>
+
+<div class="wrap">
+  <section id="works">
+    <div class="sec-head">
+      <div><div class="eyebrow">Портфолио</div><h2 style="margin-top:12px">Работы</h2></div>
+      <p>Каждый проект сделан с нуля под нишу: своя типографика, палитра и структура. Сайты бизнеса — концепт-проекты, их можно открыть и полистать.</p>
+    </div>
+    <div class="works">
+      <article class="work">
+        <div class="shot"><img src="img/shestakovy-bani.jpg" alt="Главный экран сайта спа-комплекса Шестаковы бани" loading="lazy"></div>
+        <div class="meta"><h3>Шестаковы бани</h3><span class="kind">лендинг</span></div>
+        <p>Спа-комплекс. Премиальная подача, галерея, отзывы, бронирование и плавающая кнопка звонка.</p>
+        <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">анимации</span><span class="tag">форма брони</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><img src="img/el-maestro.jpg" alt="Главный экран сайта барбершопа El Maestro" loading="lazy"></div>
+        <div class="meta"><h3>El Maestro</h3><span class="kind">лендинг</span></div>
+        <p>Барбершоп. Услуги, мастера, прайс и онлайн-запись. Классический стиль: золото на чёрном.</p>
+        <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">запись онлайн</span><span class="tag">адаптив</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><img src="img/graffiti-salon.jpg" alt="Главный экран сайта парикмахерской KUTS" loading="lazy"></div>
+        <div class="meta"><h3>KUTS</h3><span class="kind">лендинг</span></div>
+        <p>Молодёжная парикмахерская. Стрит-стиль, неон и граффити, крупная типографика.</p>
+        <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">брутализм</span><span class="tag">анимации</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><img src="img/veselyi-krolik.jpg" alt="Главный экран сайта детского лофта Весёлый кролик" loading="lazy"></div>
+        <div class="meta"><h3>Весёлый кролик</h3><span class="kind">лендинг</span></div>
+        <p>Детский лофт для праздников. Дружелюбный стиль, рейтинг 2ГИС на первом экране, бронирование даты.</p>
+        <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">иллюстрации SVG</span><span class="tag">бронь</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><img src="img/monarch-car.jpg" alt="Главный экран промо-сайта автомобиля Монарх" loading="lazy"></div>
+        <div class="meta"><h3>Монарх</h3><span class="kind">промо-сайт</span></div>
+        <p>Презентация автомобиля: комплектации, технологии, галерея и запись на тест-драйв.</p>
+        <div class="tags"><span class="tag">HTML/CSS/JS</span><span class="tag">SVG-графика</span><span class="tag">конфигуратор</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><img src="img/salary-calc.jpg" alt="Интерфейс калькулятора зарплаты" loading="lazy"></div>
+        <div class="meta"><h3>Калькулятор зарплаты</h3><span class="kind">PWA-приложение</span></div>
+        <p>Расчёт аванса, зарплаты и надбавок для сотрудников пунктов выдачи. Ставится на телефон и работает без интернета.</p>
+        <div class="tags"><span class="tag">PWA</span><span class="tag">offline</span><span class="tag">Service Worker</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><div class="mock coach" aria-hidden="true"><div class="dash">
+          <div>Клиенты<b>24</b></div><div>Отчёты<b>18</b></div><div>AI-планы<b>41</b></div>
+          <div class="wide"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:85%"></i><i style="height:78%"></i><i style="height:95%"></i></div>
+        </div></div></div>
+        <div class="meta"><h3>CoachOS</h3><span class="kind">SaaS · MVP</span></div>
+        <p>Кабинет фитнес-тренера: клиенты, замеры, программы и планы питания. AI собирает тренировки и отчёты.</p>
+        <div class="tags"><span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">LLM API</span><span class="tag">shadcn/ui</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><div class="mock bot" aria-hidden="true"><div class="chat">
+          <div class="b in">Каталог: мужские · женские · унисекс · нишевая</div>
+          <div class="b out">Покажи нишевую до 15 000 ₽</div>
+          <div class="b in">Нашёл 7 ароматов. Добавить в корзину?</div>
+          <div class="kb"><span>В корзину</span><span>Следующий</span><span>Корзина (2)</span><span>Оформить</span></div>
+        </div></div></div>
+        <div class="meta"><h3>Perfume Bot</h3><span class="kind">Telegram-бот</span></div>
+        <p>Магазин парфюмерии в Telegram: каталог, поиск, корзина, заказы. Админка в боте: цены меняются в пару нажатий.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">aiogram 3</span><span class="tag">SQLAlchemy</span><span class="tag">админ-панель</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><div class="mock video" aria-hidden="true"><div class="timeline">
+          <div class="frame"></div>
+          <div class="row"><i style="flex:3"></i><i style="flex:1;background:#F08A4B"></i><i style="flex:4"></i><i style="flex:2"></i></div>
+          <div class="row"><i style="flex:5;background:#3E6A8A"></i><i style="flex:3;background:#3E6A8A"></i></div>
+        </div></div></div>
+        <div class="meta"><h3>AI Video Editor</h3><span class="kind">веб-сервис</span></div>
+        <p>Монтаж видео командами на русском языке. Нейросеть смотрит кадры и предлагает правки.</p>
+        <div class="tags"><span class="tag">FastAPI</span><span class="tag">OpenCV</span><span class="tag">Claude API</span></div>
+      </article>
+      <article class="work">
+        <div class="shot"><div class="mock game" aria-hidden="true"><div class="cross"></div>
+          <div class="hud"><span>Комната: <b>arena-1</b></span><span>Игроки <b>8/10</b></span><span>Точка <b>64%</b></span></div>
+        </div></div>
+        <div class="meta"><h3>Arena</h3><span class="kind">браузерная 3D-игра</span></div>
+        <p>Командный шутер 5 на 5 прямо в браузере. Онлайн-комнаты, боты, физика и разрушаемые объекты.</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">cannon-es</span><span class="tag">Node.js</span><span class="tag">WebSocket</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="sec-head">
+      <div><div class="eyebrow">Услуги и цены</div><h2 style="margin-top:12px">Что могу сделать</h2></div>
+      <p>Цены стартовые. Точную стоимость назову после короткого брифа, без скрытых доплат.</p>
+    </div>
+    <div class="services">
+      <div class="svc">
+        <div class="eyebrow">Лендинг</div>
+        <h3>Сайт для бизнеса</h3>
+        <div class="price">от 5 000 ₽</div>
+        <ul><li>Уникальный дизайн под нишу</li><li>Адаптив под телефон</li><li>Заявки в Telegram или на почту</li><li>Помощь с доменом и хостингом</li></ul>
+        <div class="term">срок: от 3 дней</div>
+      </div>
+      <div class="svc hot">
+        <div class="eyebrow">Чаще всего заказывают</div>
+        <h3>Telegram-бот</h3>
+        <div class="price">от 5 000 ₽</div>
+        <ul><li>Запись, магазин, заявки, рассылки</li><li>Админка прямо в Telegram</li><li>Оплата и база данных</li><li>Запуск на сервере</li></ul>
+        <div class="term">срок: от 3 дней</div>
+      </div>
+      <div class="svc">
+        <div class="eyebrow">MVP / сервис</div>
+        <h3>Веб-приложение с AI</h3>
+        <div class="price">от 20 000 ₽</div>
+        <ul><li>Личный кабинет и авторизация</li><li>Нейросеть внутри: GPT, Claude и др.</li><li>База данных, админка</li><li>Деплой и инструкция</li></ul>
+        <div class="term">срок: от 7 дней</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="sec-head">
+      <div><div class="eyebrow">Процесс</div><h2 style="margin-top:12px">Как работаю</h2></div>
+      <p>Вы видите результат каждый день, а не через месяц.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">шаг 1</div><h3>Бриф</h3><p>15 минут в переписке: задача, примеры, что важно. Называю цену и срок.</p></div>
+      <div class="step"><div class="n">шаг 2</div><h3>Первый экран</h3><p>Через день показываю дизайн главного экрана. Правим направление, пока это дёшево.</p></div>
+      <div class="step"><div class="n">шаг 3</div><h3>Сборка</h3><p>Делаю всё остальное. Присылаю ссылку, можно тыкать с телефона.</p></div>
+      <div class="step"><div class="n">шаг 4</div><h3>Запуск</h3><p>Выкладываю на ваш домен, передаю код и доступы. 14 дней правок бесплатно.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="why">
+      <div><h3>Быстро</h3><p>AI-ассистенты пишут рутинный код, я отвечаю за архитектуру, дизайн и проверку. Отсюда сроки в днях.</p></div>
+      <div><h3>Без шаблонов</h3><p>Не беру готовые темы. Каждый сайт получает свой стиль, поэтому не похож на соседний.</p></div>
+      <div><h3>Ваше — значит ваше</h3><p>Исходный код, домен, хостинг и доступы оформлены на вас. Можно уйти к другому разработчику в любой момент.</p></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div>
+        <h2>Есть идея? Напишите в двух словах</h2>
+        <p style="margin-top:16px">Отвечу в течение часа: скажу, как сделать, сколько стоит и когда будет готово.</p>
+      </div>
+      <div class="links">
+        <a class="btn primary" href="https://kwork.ru/" target="_blank" rel="noopener">Написать на Kwork</a>
+        <a class="btn ghost" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+  </section>
+</div>
+<footer><div class="wrap">© 2026 Кирилл Шестаков · сайты, боты и AI-сервисы</div></footer>
+
+</body>
+</html>
